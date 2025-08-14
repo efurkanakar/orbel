@@ -1,7 +1,7 @@
 # orbel
 
 <i>**orbel** is a Python program designed to help understand orbital elements by visualising relative and absolute Keplerian orbits in both 3D and 2D.  <i>
-
+---
 It was originally created during my master's thesis work on astrometry, starting as a simple tool to explore orbital dynamics, and later evolved into a complete program for educational and research purposes. During my studies, I noticed that both I and many other students struggled to fully understand these elements in lectures and online resources, and found it difficult to visualise them in space. This motivated me to develop this program.
 
 ---
