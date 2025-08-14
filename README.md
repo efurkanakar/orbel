@@ -38,7 +38,11 @@ python orbel.py
 ```
 
 
-Contact
+## Contact
 
 If you have ideas or suggestions for improving orbel, feel free to reach out:
 efurkanakar@gmail.com
+
+
+## License
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
