@@ -11,9 +11,9 @@ It was originally created during my master's thesis work on astrometry, starting
 - Visualisation of relative and absolute orbits
 - 3D orbit geometry and sky-plane projection views
 - Customisable orbital parameters via interactive sliders
+- Orientation aids with arcs and wedges make the orbit’s orientation in space easier to understand
 - Bodies move according to Kepler's laws of planetary motion 
 - Supports both educational use and research presentations
-
 ---
 
 
