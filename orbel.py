@@ -17,6 +17,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from mpl_toolkits.mplot3d import proj3d
+from functools import partial
 
 
 def Rz(t):
@@ -807,6 +808,8 @@ class MainWindow(QMainWindow):
         self._bind_mass("m1")
         self._bind_mass("m2")
 
+        self._tint_param_sliders()
+
         self.btn_play.clicked.connect(self.toggle_play)
         self.btn_reset.clicked.connect(self.reset_view)
         self.tabbar.currentChanged.connect(self._on_tab_changed)
@@ -814,6 +817,28 @@ class MainWindow(QMainWindow):
 
         self.apply_params_from_init()
         self._sync_left_spacer()
+
+    def _tint_slider(self, key: str, color: str):
+        sld = self.ctrls[key][0]
+        sld.setStyleSheet(f"""
+        QSlider::groove:horizontal {{
+            height: 6px; background: #e5e7eb; border-radius: 3px;
+        }}
+        QSlider::sub-page:horizontal {{
+            background: {color}; border-radius: 3px;
+        }}
+        QSlider::handle:horizontal {{
+            width: 14px; height: 14px; margin: -5px 0;
+            border: 1px solid #111827; border-radius: 7px; background: #ffffff;
+        }}
+        QSlider::handle:horizontal:hover {{ border: 1px solid #0f172a; }}
+        QSlider::handle:horizontal:pressed {{ width: 16px; height: 16px; }}
+        """)
+
+    def _tint_param_sliders(self):
+        self._tint_slider("i", "cyan")
+        self._tint_slider("w", "darkorange")
+        self._tint_slider("Om", "seagreen")
 
     def show_about(self):
         QMessageBox.about(
@@ -831,18 +856,23 @@ class MainWindow(QMainWindow):
             )
         )
 
+    def _sld_to_spn(self, v, *, spn, mn, st):
+        spn.setValue(mn + v * st)
+
+    def _spn_to_sld(self, x, *, sld, mn, st):
+        sld.setValue(int(round((x - mn) / st)))
+
     def _bind(self, key, cb):
         sld, spn, mn, st = self.ctrls[key]
-        sld.valueChanged.connect(lambda v, mn=mn, st=st, spn=spn: spn.setValue(mn + v*st))
-        spn.valueChanged.connect(lambda x, mn=mn, st=st, sld=sld: sld.setValue(int(round((x-mn)/st))))
+        sld.valueChanged.connect(partial(self._sld_to_spn, spn=spn, mn=mn, st=st))
+        spn.valueChanged.connect(partial(self._spn_to_sld, sld=sld, mn=mn, st=st))
         spn.valueChanged.connect(cb)
 
     def _bind_mass(self, key):
         sld, spn, mn, st = self.ctrls[key]
-        sld.valueChanged.connect(lambda v, mn=mn, st=st, spn=spn: spn.setValue(mn + v*st))
-        spn.valueChanged.connect(lambda x, mn=mn, st=st, sld=sld: sld.setValue(int(round((x-mn)/st))))
+        sld.valueChanged.connect(partial(self._sld_to_spn, spn=spn, mn=mn, st=st))
+        spn.valueChanged.connect(partial(self._spn_to_sld, sld=sld, mn=mn, st=st))
         spn.valueChanged.connect(self.on_mass_changed_abs_only)
-
     def eventFilter(self, obj, event):
         if obj is self.tabbar and event.type() in (QEvent.Resize, QEvent.Show, QEvent.LayoutRequest):
             self._sync_left_spacer()
