@@ -1,0 +1,22 @@
+# Byte-compiled / cached files
+__pycache__/
+*.py[cod]
+
+# Test cache
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local editor/OS files
+.DS_Store
+
+# Project assets that are generated or not needed in the repo
+images/
+docs/
+
+paper.bib
+paper.md
+README.md
