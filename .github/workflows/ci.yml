@@ -40,6 +40,6 @@ jobs:
       - name: Run tests with pytest
         env:
           QT_QPA_PLATFORM: offscreen
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           xvfb-run -a pytest
-
