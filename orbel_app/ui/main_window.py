@@ -84,6 +84,7 @@ class MainWindow(QMainWindow):
             self.canvas_manager.recompute_all()
 
     def _setup_window_chrome(self) -> None:
+        self.setMinimumHeight(900)
         self.setWindowTitle("orbel")
         self.setWindowIcon(load_icon("orbel.ico"))
         self.setStyleSheet(UI_QSS + SLIDER_QSS)
@@ -197,7 +198,6 @@ class MainWindow(QMainWindow):
         self.canvas_manager.apply_font_size(self.plot_font_size)
 
         self.option_controller.apply_all()
-
 
     def _on_play_toggled(self, play: bool) -> None:
         if self.canvas_manager:

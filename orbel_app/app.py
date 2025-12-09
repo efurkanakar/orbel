@@ -29,23 +29,7 @@ def create_application(argv: Sequence[str] | None = None) -> Tuple[QApplication,
     app.setFont(QFont("Segoe UI", 11))
 
     window = MainWindow()
-    platform = (QApplication.platformName() or "").lower()
-    xdg_session = os.environ.get("XDG_SESSION_TYPE", "").lower()
-    on_wayland = "wayland" in platform or xdg_session == "wayland"
-
-    if on_wayland:
-        screen = QApplication.primaryScreen()
-        if screen is not None:
-            avail = screen.availableGeometry()
-            target_w = int(avail.width() * 0.9)
-            target_h = int(avail.height() * 0.9)
-            min_w = int(avail.width() * 0.8)
-            min_h = int(avail.height() * 0.8)
-            window.resize(target_w, target_h)
-            window.setMinimumSize(min_w, min_h)
-        window.showMaximized()
-    else:
-        window.showMaximized()
+    window.showMaximized()
     return app, window
 
 
