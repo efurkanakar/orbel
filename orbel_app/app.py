@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from typing import Sequence, Tuple
 import sys
+import os
 
 from PyQt5.QtCore import QLocale, Qt
 from PyQt5.QtGui import QFont
@@ -19,12 +20,6 @@ from .ui.main_window import MainWindow
 
 
 def create_application(argv: Sequence[str] | None = None) -> Tuple[QApplication, MainWindow]:
-    """
-    Configure and return the QApplication instance plus the main window.
-
-    Keeping this logic in a helper makes it possible to unit test the window
-    without spinning the Qt event loop.
-    """
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
@@ -34,12 +29,27 @@ def create_application(argv: Sequence[str] | None = None) -> Tuple[QApplication,
     app.setFont(QFont("Segoe UI", 11))
 
     window = MainWindow()
-    window.showMaximized()
+    platform = (QApplication.platformName() or "").lower()
+    xdg_session = os.environ.get("XDG_SESSION_TYPE", "").lower()
+    on_wayland = "wayland" in platform or xdg_session == "wayland"
+
+    if on_wayland:
+        screen = QApplication.primaryScreen()
+        if screen is not None:
+            avail = screen.availableGeometry()
+            target_w = int(avail.width() * 0.9)
+            target_h = int(avail.height() * 0.9)
+            min_w = int(avail.width() * 0.8)
+            min_h = int(avail.height() * 0.8)
+            window.resize(target_w, target_h)
+            window.setMinimumSize(min_w, min_h)
+        window.showMaximized()
+    else:
+        window.showMaximized()
     return app, window
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     """Entry point used by ``python -m orbel`` or ``orbel.main()``."""
-
     app, _window = create_application(argv)
     return app.exec_()

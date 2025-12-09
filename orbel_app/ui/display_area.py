@@ -28,6 +28,7 @@ class DisplayAreaBundle:
 def create_display_area() -> DisplayAreaBundle:
     display_group = QWidget()
     display_group.setObjectName("displayGroup")
+    display_group.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
     display_layout = QHBoxLayout(display_group)
     display_layout.setContentsMargins(0, 0, 0, 0)
     display_layout.setSpacing(10)
@@ -35,7 +36,8 @@ def create_display_area() -> DisplayAreaBundle:
     tab_column = QWidget()
     tab_column.setObjectName("tabColumn")
     tab_column.setFixedWidth(70)
-    tab_column.setMinimumHeight(420)
+    tab_column.setMinimumHeight(0)
+    tab_column.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
     tab_layout = QVBoxLayout(tab_column)
     tab_layout.setContentsMargins(4, 8, 4, 8)
     tab_layout.setSpacing(8)
@@ -59,6 +61,7 @@ def create_display_area() -> DisplayAreaBundle:
     display_layout.addWidget(tab_column, 0)
 
     plot_holder = QWidget()
+    plot_holder.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
     plot_holder_layout = QVBoxLayout(plot_holder)
     plot_holder_layout.setContentsMargins(0, 0, 0, 0)
     plot_holder_layout.setSpacing(8)
@@ -82,6 +85,9 @@ def create_display_area() -> DisplayAreaBundle:
     right_layout.setSpacing(0)
     stack_2d = QStackedLayout()
     right_layout.addLayout(stack_2d)
+
+    mid_col.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    right_col.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     gfx_row.addWidget(mid_col, 1)
     gfx_row.addWidget(right_col, 1)
